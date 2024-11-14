@@ -1,0 +1,277 @@
+/* General Body Styling */
+body {
+    background-color: #e8edf7; /* Soft background for the body */
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    background: linear-gradient(45deg, #4863A0, #4863A0);
+    color: #fff;
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+}
+
+/* Sidebar Heading */
+.sidebar-heading {
+    padding: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 1.5rem; /* Larger font size */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+/* Navigation Link Styling */
+.nav-link {
+    color: #fff;
+    padding: 12px 25px;
+    margin: 5px;
+    font-size: 1.1rem;
+    display: block;
+    border-radius: 25px; /* Consistent rounded edges */
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Highlight on hover */
+    transform: translateX(5px); /* Shift effect on hover */
+}
+
+/* Active Link Styling */
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Tab Content Styling */
+.tab-content {
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Button Styling */
+#save {
+    background: linear-gradient(45deg, #4880EC, #019CAD);
+    border: none;
+    color: #ffffff;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#save:hover {
+    background: linear-gradient(45deg, #3A71C4, #017A89);
+    transform: scale(1.05);
+}
+
+/* Review Card Styling */
+.review-card {
+    background-color: #ffffff;
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.review-card:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+}
+
+/* Product Info Layout */
+.product-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Product Image Styling */
+.product-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Details Styling */
+.product-details h5 {
+    margin: 0;
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: bold; /* Added boldness */
+}
+
+/* Rating and Review Styling */
+.rating-review h6 {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ffbf00; /* Gold color for rating */
+}
+
+.rating-review p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.user-info p {
+    margin: 2px 0;
+    color: #e4e3e3;
+}
+
+/* Wishlist Item Styling */
+.wishlist-item {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.wishlist-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.wishlist-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.wishlist-item h5 {
+    font-size: 1.3rem;
+    color: #333;
+    margin: 10px 0;
+    font-weight: bold; /* Added boldness */
+}
+
+/* Price and Rating Styling */
+.wishlist-item .rating {
+    font-size: 1rem;
+    color: #ffbf00;
+}
+
+.wishlist-item .price {
+    font-size: 1.2rem;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* Delete Button Styling */
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 30px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* Order Item Styling */
+.order-item {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.order-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.order-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.order-item h5 {
+    font-size: 1.3rem;
+    color: #333;
+    font-weight: bold; /* Added boldness */
+}
+
+/* Order Price Styling */
+.order-item .price {
+    font-size: 1.2rem;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* Order Status Styling */
+.order-status {
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Rate Button Styling */
+.rate-btn {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.rate-btn:hover {
+    background-color: #e67e22;
+    transform: scale(1.05);
+}
+
+/* General User Info Styling */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+/* User Icon Styling */
+.user-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #4880EC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+}

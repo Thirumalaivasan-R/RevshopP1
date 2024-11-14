@@ -1,0 +1,335 @@
+@charset "ISO-8859-1";
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4863A0;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 1; /* Ensure navbar is above carousel */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.navbar {
+    position: sticky; /* Make the navbar sticky */
+    top: 0; /* Stick to the top of the viewport */
+    z-index: 1000; /* Ensure it stays above other content */
+}
+.logo h2 {
+    color: white;
+    font-size: 24px;
+}
+
+.search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 40%; /* Reduced width */
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    outline: none; /* Removes border on focus */
+    transition: border 0.3s;
+}
+
+.search-bar button {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    margin-left: -4px;
+    cursor: pointer;
+}
+
+.search-bar button i {
+    color: #4863A0;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap:10px;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    margin-top:10px;
+}
+
+.nav-links a i {
+    margin-right: 10px;
+}
+
+.hamburger {
+    display: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Carousel Styles */
+.carousel {
+    position: relative;
+    max-width: 100%;
+    margin: 20px auto;
+    overflow: hidden;
+    text-align: center;
+    margin-top:-10px;
+}
+
+.carousel-container {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-container .slide {
+    min-width: 100%;
+    display: none;
+}
+
+.carousel img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #4863A0;
+        width: 100%;
+        text-align: right;
+    }
+
+    .nav-links.active {
+        display: flex;
+        z-index: 2; /* Ensure it appears above carousel */
+    }
+
+    .nav-links li {
+        margin-left: 0;
+        margin-top: 10px;
+        padding-right: 20px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .search-bar {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .search-bar input {
+        width: 80%;
+    }
+
+    /* Adjust carousel when nav is open */
+    .carousel {
+        margin-top: 50px; /* Prevent overlapping */
+    }
+}
+.featured-products {
+    margin: 20px 0;
+}
+
+.card {
+    border: none; /* Remove default border */
+    transition: transform 0.2s, box-shadow 0.3s; /* Smooth transition */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+}
+
+.card-img-top {
+    height: 200px; /* Fixed height for images */
+    object-fit: cover; /* Ensure the image covers the area */
+}
+.btn-custom {
+    background-color: #A18648 !important; /* Custom button color */
+    border: none !important; /* Remove the border */
+    color: white !important; /* Set text color */
+}
+
+.btn-custom:hover {
+    background-color: #8d6b38 !important; /* Darker shade on hover */
+    color: white !important; /* Ensure text color is white on hover */
+}
+/* Fade in/out animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h2.text-center {
+    font-weight: bold; /* Make the text bold */
+    font-size: 2.5rem; /* Adjust the font size as needed */
+    color: #333; /* Set the text color */
+    text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5), /* White shadow for depth */
+                 4px 4px 0 rgba(0, 0, 0, 0.2); /* Dark shadow for 3D effect */
+    animation: fadeIn 0.6s ease; /* Apply the fade-in animation */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Box shadow for the text */
+    margin-bottom: 1.5rem; /* Adjust margin as needed */
+}
+@media (max-width: 576px) {
+    h2.text-center {
+        font-size: 2rem; /* Smaller font size on small screens */
+    }
+}
+
+footer {
+    background-color: azure; /* Change to azure blue */
+}
+
+footer h5, footer h6 {
+    color: #ffffff; /* White text for headings */
+}
+
+footer a {
+    text-decoration: none; /* Remove underline from links */
+    transition: color 0.3s; /* Smooth transition for hover effect */
+}
+
+footer a:hover {
+    color: #f1c40f; /* Change color on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    footer .col-md-5, footer .col-md-2, footer .col-md-3 {
+        margin-bottom: 20px; /* Space between columns on small screens */
+    }
+}
+section.py-5 {
+    background-color: #F0FFFF; /* Light azure background */
+    padding: 60px 20px; /* Increase padding for top and bottom */
+}
+
+.row {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+}
+
+.col-md-6 img {
+    width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 400px; /* Set a max height for the image */
+    object-fit: cover; /* Cover to maintain aspect ratio */
+    border-radius: 1rem; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.col-md-6 {
+    padding: 20px; /* Add padding for better spacing */
+}
+
+.text-muted {
+    font-size: 1.2rem; /* Larger size for "Our Story" */
+}
+
+h2.display-5 {
+    font-size: 2.5rem; /* Larger font size for the heading */
+    margin-top: 20px; /* Space above heading */
+    margin-bottom: 20px; /* Space below heading */
+}
+
+p {
+    font-size: 1.1rem; /* Slightly larger text for the paragraph */
+    line-height: 1.6; /* Better line spacing */
+    color: #333; /* Darker text color for readability */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .col-md-6 img {
+        max-height: 300px; /* Reduce image size on smaller screens */
+    }
+    
+    h2.display-5 {
+        font-size: 2rem; /* Smaller heading on smaller screens */
+    }
+
+    p {
+        font-size: 1rem; /* Smaller paragraph text on smaller screens */
+    }
+}
+@keyframes textAnimation {
+    0% {
+        color: #4863a0;
+        text-shadow: 0 0 3px rgba(72, 99, 160, 0.3), 0 0 5px rgba(72, 99, 160, 0.2); /* Less blur */
+    }
+    50% {
+        color: #a0b8e3; /* Lighter shade for animation */
+        text-shadow: 0 0 5px rgba(72, 99, 160, 0.5), 0 0 7px rgba(72, 99, 160, 0.4); /* Less blur */
+    }
+    100% {
+        color: #4863a0;
+        text-shadow: 0 0 3px rgba(72, 99, 160, 0.3), 0 0 5px rgba(72, 99, 160, 0.2); /* Less blur */
+    }
+}
+
+
+h2.text-center {
+    animation: textAnimation 3s infinite; /* Animation duration and infinite loop */
+}
+#contact{
+    color: white;
+}

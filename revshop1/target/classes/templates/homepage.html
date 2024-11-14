@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product List</title>
+    <style>
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            float: left;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        .clear {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Products</h1>
+
+    <div th:if="${products.size() == 0}">
+        <p>No products available</p>
+    </div>
+
+    <div th:each="product : ${products}" class="product">
+        <img th:src="@{${product.image}}" alt="Product Image" />
+        <h2 th:text="${product.name}">Product Name</h2>
+        <p th:text="${product.description}">Product Description</p>
+        <p>Price: $<span th:text="${product.price}"></span></p>
+        <p th:if="${product.discountprice != null}">
+            Discounted Price: $<span th:text="${product.discountprice}"></span>
+        </p>
+        <p>Category: <span th:text="${product.categoryname}"></span></p>
+        <p>Quantity Available: <span th:text="${product.quantity}"></span></p>
+		
+		<form action="/cart/add" method="post">
+		    <input type="hidden" name="productId" th:value="${product.productId}">
+		    <input type="number" name="quantity" value="1" min="1">
+		    <button type="submit">Add to Cart</button>
+		</form>
+
+    </div>
+
+    <div class="clear"></div>
+    <script>
+
+    // jQuery to handle modal data population
+    $(document).ready(function() {
+        $('#productModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var imgSrc = button.data('img'); // Extract info from data-* attributes
+            var title = button.data('title');
+            var description = button.data('description');
+            var price = button.data('price');
+
+            // Update the modal's content
+            var modal = $(this);
+            modal.find('#modalProductImg').attr('src', imgSrc);
+            modal.find('#productModalLabel').text(title);
+            modal.find('#modalProductDescription').text(description);
+            modal.find('#modalProductPrice').text(price);
+        });
+    });
+    document.querySelector('.dropbtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        let dropdown = this.closest('.dropdown');
+        dropdown.classList.toggle('active');
+    });
+    
+
+    </script>
+</body>
+</html>

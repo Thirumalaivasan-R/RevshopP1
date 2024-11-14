@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Wishlist</title>
+
+    <style>
+        /* Global Reset and Basic Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4fb;
+            color: #333;
+            font-size: 18px; /* Increased base font size */
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px; /* Increased container width */
+            margin: 50px auto;
+            padding: 0 30px;
+        }
+
+        /* Heading Styling */
+        h1 {
+            text-align: center;
+            font-size: 3rem; /* Increased font size */
+            color: #003f8a;
+            margin-bottom: 50px;
+            font-weight: bold;
+        }
+
+        /* Wishlist Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 20px; /* Increased padding */
+            text-align: center;
+            border-bottom: 1px solid #d0d0d0;
+            font-size: 1.4rem; /* Increased font size for table cells */
+        }
+
+        th {
+            background-color: #e5efff;
+            text-transform: uppercase;
+            font-size: 1.2rem; /* Increased font size for headers */
+            color: #003f8a;
+        }
+
+        /* Product Image and Text Styling */
+        .product-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-info img {
+            width: 120px; /* Increased image size */
+            height: auto;
+            margin-right: 20px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            transition: transform 0.3s;
+        }
+
+        .product-info img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Button Styling */
+        button {
+            padding: 15px 30px; /* Increased button padding */
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            font-size: 1.2rem; /* Increased button font size */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        /* Empty Wishlist Message */
+        .empty-message {
+            text-align: center;
+            font-size: 1.5rem; /* Increased font size for empty message */
+            color: #666;
+            margin: 50px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem; /* Reduced for smaller screens */
+            }
+
+            th,
+            td {
+                font-size: 1.1rem; /* Adjusted for smaller screens */
+            }
+
+            button {
+                font-size: 1rem; /* Adjusted button size for smaller screens */
+            }
+
+            .product-info img {
+                width: 90px; /* Adjusted image size for smaller screens */
+            }
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4863A0;
+            padding: 25px 40px; /* Increased padding */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo h2 {
+            color: white;
+            font-size: 36px; /* Increased font size */
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 30px; /* Increased padding */
+        }
+
+        .search-bar input {
+            width: 85%; /* Adjusted width */
+            padding: 15px; /* Increased input padding */
+            border: 2px solid #4863A0;
+            border-radius: 6px 0 0 6px;
+            font-size: 20px; /* Increased font size */
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #333;
+        }
+
+        .search-bar button {
+            padding: 15px;
+            background-color: #4863A0;
+            border: none;
+            color: white;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+        }
+
+        .search-bar button i {
+            color: white;
+            font-size: 24px; /* Increased icon size */
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            font-size: 20px; /* Increased font size */
+        }
+
+        .nav-links li {
+            margin-left: 40px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .hamburger {
+            display: none;
+            color: white;
+            font-size: 35px; /* Increased icon size */
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Your Wishlist</h1>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="wishlistItem : ${wishlistItems}">
+                        <td>
+                            <div class="product-info">
+                                <img th:src="@{${wishlistItem.product.image}}" alt="Product Image" />
+                                <span th:text="${wishlistItem.product.name}"></span>
+                            </div>
+                        </td>
+                        <td th:text="${wishlistItem.product.price}"></td>
+                        <td>
+                            <form action="/wishlist/remove" method="post">
+                                <input type="hidden" name="productId" th:value="${wishlistItem.product.productId}">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(wishlistItems)}" class="empty-message">
+                Your wishlist is currently empty.
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

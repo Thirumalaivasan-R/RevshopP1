@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/navbar.css}">
+    <script th:src="@{/script.js}" defer></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4863A0;
+            padding: 20px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo h2 {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .product-card {
+            max-width: 80%;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .product-image {
+            max-width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+            height: 350px;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #A4863A;
+        }
+
+        .product-description {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .product-price {
+            font-size: 20px;
+            color: #A4863A;
+        }
+
+        .actual-price {
+            text-decoration: line-through;
+            color: #dc3545;
+            margin-left: 10px;
+        }
+
+        .addtocart-wishlist {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-add-to-cart {
+            background-color: #A18648;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .btn-add-to-cart i {
+            margin-right: 5px;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #A18638;
+        }
+
+        .wishlist-btn {
+            background-color: #A18648;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .wishlist-btn i {
+            margin-right: 5px;
+        }
+
+        .wishlist-btn:hover {
+            background-color: #e0a800;
+        }
+        .logout-home button {
+            background-color: transparent;
+            border: 1px solid white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logout-home button:hover {
+            background-color: white;
+            color: #4863A0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <h2>RevShop</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="dropdown" id="user-dropdown">
+                <a href="#" class="dropbtn"><i class="fas fa-user"></i> Login</a>
+                <div class="dropdown-content">
+                    <a th:href="@{/registration}">New Customer? Sign Up</a>
+                    <a th:href="@{/profile}">My Profile</a>
+                    <a th:href="@{/viewOrders}">My Orders</a>
+                </div>
+            </li>
+            <li><a th:href="@{/cart}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+            <li><a th:href="@{/wishlist}"><i class="fas fa-heart"></i> Wishlist</a></li>
+            <li><a th:href="@{/sellerRegistration}"><i class="fas fa-store"></i> Become a Seller</a></li>
+            <li class="logout-home">
+                <button onclick="window.location.href='/home'">Home</button>
+                <button onclick="window.location.href='/login'">Logout</button>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container product-card">
+        <div class="row">
+            <div class="col-md-6">
+                <img th:src="@{${product.image}}" alt="Product Image" class="product-image">
+            </div>
+            <div class="col-md-6">
+                <h2 class="product-title" th:text="${product.name}">Product Name</h2>
+                <p class="product-description" th:text="${product.description}">This is the product description</p>
+                <p>
+                    <span class="product-price">Rs<span th:text="${product.discountprice}"></span></span>
+                    <span class="actual-price" th:if="${product.price}" th:text="${product.price}"></span>
+                </p>
+                <p><strong>Category:</strong> <span th:text="${product.categoryname}"></span></p>
+                <p><strong>Quantity Available:</strong> <span th:text="${product.quantity}"></span></p>
+                <div class="addtocart-wishlist">
+                    <form action="/cart/add" method="post" style="display: inline-block;">
+                        <input type="hidden" name="productId" th:value="${product.productId}">
+                        <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 80px; display: inline-block;">
+                        <button type="submit" class="btn-add-to-cart"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                    </form>
+                    <form th:action="@{/wishlist/add}" method="post" style="display: inline-block;">
+                        <input type="hidden" name="productId" th:value="${product.productId}">
+                        <button type="submit" class="wishlist-btn"><i class="fas fa-heart"></i> Add to Wishlist</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container reviews-section mt-5">
+        <h3>Customer Reviews</h3>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="review : ${reviews}">
+                <div class="review-content">
+                    
+                    <p th:text="${review.reviewText}"></p>
+                   
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

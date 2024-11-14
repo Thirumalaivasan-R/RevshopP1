@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+</head>
+<style>
+	/* Global reset and basic styles */
+	* {
+	    box-sizing: border-box;
+	    margin: 0;
+	    padding: 0;
+	}
+
+	body {
+	    font-family: 'Arial', sans-serif;
+	    background: linear-gradient(-45deg, #f3e7e9, #e3eeff, #e8ffde, #ffdde1);
+	    background-size: 300% 300%;
+	    animation: backgroundSlide 15s ease infinite;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    height: 100vh;
+	    padding: 20px;
+	    overflow: hidden;
+	}
+
+	@keyframes backgroundSlide {
+	    0% { background-position: 0% 50%; }
+	    50% { background-position: 100% 50%; }
+	    100% { background-position: 0% 50%; }
+	}
+
+	/* Main container styling */
+	.container {
+	    display: flex;
+	    background-color: #ffffff;
+	    border-radius: 20px;
+	    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+	    width: 90%;
+	    max-width: 1000px;
+	    overflow: hidden;
+	    transition: transform 0.3s;
+	}
+
+	.container:hover {
+	    transform: translateY(-5px);
+	    transition: transform 0.3s ease-in-out;
+	}
+
+	.left-side {
+	    background-color: #4863A0;
+	    color: white;
+	    padding: 50px;
+	    flex: 1;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center;
+	    text-align: center;
+	    border-top-left-radius: 20px;
+	    border-bottom-left-radius: 20px;
+	    transform-style: preserve-3d;
+	    perspective: 1000px;
+	    transition: transform 0.8s ease-in-out;
+	}
+
+	.container:hover .left-side {
+	    transform: rotateY(10deg);
+	}
+
+	.left-side h1 {
+	    font-size: 38px;
+	    font-weight: bold;
+	    margin-bottom: 20px;
+	    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+	    animation: fadeIn 1s ease-in-out;
+	}
+
+	.left-side p {
+	    font-size: 18px;
+	    margin-bottom: 30px;
+	    line-height: 1.5;
+	    animation: fadeIn 1.2s ease-in-out;
+	}
+
+	@keyframes fadeIn {
+	    0% { opacity: 0; transform: translateY(-20px); }
+	    100% { opacity: 1; transform: translateY(0); }
+	}
+
+	.welcome-image {
+	    margin-top: 30px;
+	    max-width: 80%; 
+	    height: auto;
+	    border-radius: 50%;
+	    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+	    transition: transform 0.5s ease, box-shadow 0.5s ease;
+	}
+
+	.welcome-image:hover {
+	    transform: rotate(15deg) scale(1.05);
+	    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+	}
+
+	/* Right side form styling */
+	.right-side {
+	    padding: 50px;
+	    flex: 1;
+	    background-color: #f8f9fa;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center;
+	    border-top-right-radius: 20px;
+	    border-bottom-right-radius: 20px;
+	    animation: slideIn 1.2s ease forwards;
+	}
+
+	@keyframes slideIn {
+	    0% { opacity: 0; transform: translateX(50px); }
+	    100% { opacity: 1; transform: translateX(0); }
+	}
+
+	.registration-form {
+	    width: 100%;
+	    max-width: 400px;
+	    display: flex;
+	    flex-direction: column;
+	    transform: translateY(0);
+	    animation: floatForm 5s ease-in-out infinite;
+	}
+
+	@keyframes floatForm {
+	    0%, 100% { transform: translateY(0); }
+	    50% { transform: translateY(-5px); }
+	}
+
+	.registration-form h2 {
+	    margin-bottom: 25px;
+	    font-size: 28px;
+	    text-align: center;
+	    color: #343a40;
+	}
+
+	.input-group {
+	    margin-bottom: 20px;
+	    position: relative;
+	}
+
+	.input-group input {
+	    width: 100%;
+	    padding: 15px 20px;
+	    border: 2px solid #ced4da;
+	    border-radius: 30px;
+	    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s ease;
+	    font-size: 16px;
+	}
+
+	.input-group input:focus {
+	    border-color: #007bff;
+	    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+	    transform: translateY(-3px);
+	    outline: none;
+	}
+
+	/* "Change Email" link styling */
+	#change-email {
+	    display: none;
+	    margin-left: 10px;
+	    font-size: 14px;
+	    color: #007bff;
+	    cursor: pointer;
+	    position: absolute;
+	    right: 10px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+
+	#change-email:hover {
+	    text-decoration: underline;
+	}
+
+	/* Button styling */
+	button {
+	    padding: 15px;
+	    background-color: #728fce;
+	    color: white;
+	    border: none;
+	    border-radius: 30px;
+	    cursor: pointer;
+	    font-size: 18px;
+	    width: 100%;
+	    transition: background-color 0.3s, transform 0.2s;
+	    box-shadow: 0 5px 15px rgba(225, 101, 57, 0.3);
+	    position: relative;
+	    overflow: hidden;
+	    outline: none;
+	}
+
+	button:hover {
+	    background-color: #607dbf;
+	    transform: translateY(-5px);
+	}
+
+	button::after {
+	    content: '';
+	    position: absolute;
+	    top: 50%;
+	    left: 50%;
+	    width: 300%;
+	    height: 300%;
+	    background: rgba(255, 255, 255, 0.3);
+	    transition: all 0.75s ease;
+	    opacity: 0;
+	    transform: translate(-50%, -50%) scale(0);
+	    border-radius: 50%;
+	}
+
+	button:hover::after {
+	    opacity: 1;
+	    transform: translate(-50%, -50%) scale(1);
+	}
+
+	.button-container {
+	    display: flex;
+	    justify-content: center;
+	    margin-top: 20px;
+	}
+
+	/* Resend OTP styling */
+	.resend-otp-btn {
+	    background-color: #007bff;
+	    color: white;
+	    border: none;
+	    padding: 10px 20px;
+	    border-radius: 30px;
+	    cursor: pointer;
+	    transition: background-color 0.3s;
+	}
+
+	.resend-otp-btn:hover {
+	    background-color: #0056b3;
+	}
+
+	/* Message section styling */
+	.message {
+	    margin-top: 30px;
+	    text-align: center;
+	    font-size: 14px;
+	    color: #6c757d;
+	}
+
+	.message a {
+	    color: #007bff;
+	    text-decoration: none;
+	}
+
+	.message a:hover {
+	    text-decoration: underline;
+	}
+
+	/* OTP Section */
+	#otp-section {
+	    display: none;
+	    opacity: 0;
+	    transform: translateY(-20px);
+	    transition: opacity 0.5s ease, transform 0.5s ease;
+	}
+
+	#otp-section.visible {
+	    display: block;
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+
+	.hidden-section {
+	    margin-top: 25px;
+	}
+
+</style>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <h1>Welcome to RevShop!</h1>
+            <p>Create your account and start shopping with us today!</p>
+            <img th:src="@{/images/regis.jpg}" alt="Welcome Image" class="welcome-image">
+        </div>
+        <div class="right-side">
+        
+        <div th:if="${message}" class="alert alert-warning" style="color: red; text-align: center; margin-bottom: 20px;">
+                <p th:text="${message}"></p>
+            </div>
+            <form class="registration-form" th:action="@{/api/register-user}" method="post">
+                <h2>Create Account</h2>
+                
+                <div class="input-group email-group">
+                    <input type="email" id="email-input" name="email" placeholder="Email Address" required>
+                    <span id="change-email" class="hidden">Change</span> <!-- Hidden initially -->
+                </div>
+
+                <button type="button" id="continue-button">Continue</button>
+
+                <!-- OTP Section -->
+				<div id="otp-section" class="hidden-section">
+				    <div class="input-group">
+				        <input type="text" id="otp-input" name="otp" placeholder="Enter OTP" required>
+				    </div>
+				    <div class="button-container">
+				        <button type="button" class="resend-otp-btn" id="resend-otp">Resend OTP</button>
+				    </div>
+
+					<div class="button-container">
+					    <button type="submit" id="signup-button">Sign Up</button>
+					</div>
+				</div>				
+
+                <div class="message">
+                    <p>Already have an account? <a th:href="@{/login}">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+	<script th:inline="javascript">
+	    // JavaScript to handle OTP section visibility and email submission
+		document.getElementById('continue-button').addEventListener('click', function() {
+    const email = document.getElementById('email-input').value;
+
+    fetch('/api/register-send-verification', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            email: email  // Pass the email as form data
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show OTP section and update UI if the email is sent successfully
+            document.getElementById('otp-section').classList.add('visible');
+            document.getElementById('continue-button').style.display = 'none';
+            document.getElementById('email-input').disabled = true;
+            document.getElementById('change-email').style.display = 'inline-block';
+        } else if (data.error) {
+            if (data.redirect) {
+                // Redirect to login if the user already exists
+                alert(data.error);
+                window.location.href = data.redirect;
+            } else {
+                alert(data.error);
+            }
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error.message);
+        alert('An error occurred: ' + error.message);
+    });
+});
+
+	    // JavaScript to handle Resend OTP
+		document.getElementById('resend-otp').addEventListener('click', function() {
+		    const email = document.getElementById('email-input').value;
+
+		    fetch('/api/send-verification', {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+		        body: new URLSearchParams({
+		            email: email  // Pass the email as form data
+		        }),
+		    })
+		    .then(response => {
+		        if (!response.ok) {
+		            return response.json().then(error => { throw new Error(error.error); });
+		        }
+		        return response.json();
+		    })
+		    .then(data => {
+		        if (data.success) {
+		            alert('OTP resent successfully!');
+		        } else {
+		            alert('Error resending OTP.');
+		        }
+		    })
+		    .catch((error) => {
+		        console.error('Error:', error.message);
+		        alert('An error occurred while resending OTP.');
+		    });
+		});
+
+	    // JavaScript to handle OTP verification
+		document.getElementById('signup-button').addEventListener('click', function(event) {
+		    event.preventDefault(); // Prevent form from submitting
+
+		    const otp = document.getElementById('otp-input').value;
+		    const email = document.getElementById('email-input').value; 
+		    
+		    fetch('/api/verify-otp', {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+		        body: new URLSearchParams({
+		            otp: otp  // Pass the OTP as form data
+		        }),
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+		        if (data.success) {
+		            alert('OTP verified successfully!');
+
+		            // After OTP verification, register the user in the database
+		            fetch('/api/register-user', {
+		                method: 'POST',
+		                headers: {
+		                    'Content-Type': 'application/json',
+		                },
+		                body: JSON.stringify({
+		                    // Pass necessary user details
+		                	email: email,
+		                })
+		            })
+		            .then(registerResponse => registerResponse.json())
+		            .then(registerData => {
+		                if (registerData.status === 'success') {
+		                    alert('Registration successful!');
+		                    window.location.href = registerData.redirect;  // Redirect to the specified URL
+		                } else {
+		                    alert(registerData.message);  // Show error message
+		                }
+		            })
+		            .catch((error) => {
+		                console.error('Error during registration:', error.message);
+		                alert('An error occurred during registration.');
+		            });
+		        } else {
+		            alert('Invalid OTP. Please try again.');
+		        }
+		    })
+		    .catch((error) => {
+		        console.error('Error during OTP verification:', error.message);
+		        alert('An error occurred while verifying OTP.');
+		    });
+		});
+
+	    // JavaScript to change email
+	    document.getElementById('change-email').addEventListener('click', function() {
+	        document.getElementById('email-input').disabled = false;
+	        document.getElementById('continue-button').style.display = 'inline-block';
+	        document.getElementById('change-email').style.display = 'none';
+	        document.getElementById('otp-section').style.display = 'none';
+	    });
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/user-profile.css">
+    <title>User Profile Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <style>
+    .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4863A0;
+            padding: 20px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo h2 {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .search-bar input {
+            width: 80%; 
+            padding: 12px;
+            border: 2px solid #4863A0; 
+            border-radius: 4px 0 0 4px;
+            font-size: 18px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #333;
+        }
+
+        .search-bar button {
+            padding: 12px;
+            background-color: #4863A0;
+            border: none;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .search-bar button i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            font-size: 18px;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-links a i {
+            margin-right: 8px;
+        }
+
+        .hamburger {
+            display: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .logout-home button {
+            background-color: transparent;
+            border: 1px solid white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logout-home button:hover {
+            background-color: white;
+            color: #4863A0;
+        }
+        
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">
+        <h2>RevShop</h2>
+    </div>
+    <div class="search-bar">
+        <form th:action="@{/searchall}" method="get">
+            <input type="text" name="query" placeholder="Search for products..." required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+    <ul class="nav-links">
+        <li class="dropdown" id="user-dropdown">
+           
+        </li>
+        <li><a th:href="@{/cart}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        <li><a th:href="@{/wishlist}"><i class="fas fa-heart"></i> Wishlist</a></li>
+        <li><a th:href="@{/sellerRegistration}"><i class="fas fa-store"></i> Become a Seller</a></li>
+        <li class="logout-home">
+            <button onclick="window.location.href='/home'">Home</button>
+            <button onclick="window.location.href='/login'">Logout</button>
+        </li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+</nav>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="user-info my-4 text-center">
+                    <img th:src="@{/images/user-male-circle.png}" alt="User Icon" class="img-fluid rounded-circle mb-2 user-icon">
+                    <p th:text="'Hello, ' + ${user.firstName}"></p>
+                </div>
+                <div class="sidebar-sticky">
+                    <h5 class="sidebar-heading">Account Settings</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" id="profile-info-tab">Profile Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="manage-address-tab">Manage Address</a>
+                        </li>
+                        
+                        <h5 class="sidebar-heading">My Stuff</h5>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="my-reviews-tab">My Reviews and Ratings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="my-wishlist-tab">My Wishlist</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="my-orders-tab">My Orders</a>
+                        </li>
+                        <!-- Logout Option -->
+                        <li class="nav-item mt-4">
+                            <a class="nav-link text-danger" href="#" id="logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-4" id="content-area">
+                <!-- Profile Info Section -->
+                <div id="profile-info" class="tab-content mt-5">
+                    <h2 class="mb-4">Profile Information</h2>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" class="form-control" id="first-name" th:value="${user.firstName}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" class="form-control" id="last-name" th:value="${user.lastName}" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <button class="btn btn-outline-secondary" id="edit-name">Edit</button>
+                        <button class="btn btn-primary d-none" id="save-name">Save</button>
+                    </div>
+                    <div class="form-group mb-4">
+                         <label>Gender</label><br>
+                         <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="gender" id="gender-male" value="male" th:checked="${user.gender == 'male'}" disabled>
+                              <label class="form-check-label" for="gender-male">Male</label>
+                         </div>
+                         <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="gender" id="gender-female" value="female" th:checked="${user.gender == 'female'}" disabled>
+                              <label class="form-check-label" for="gender-female">Female</label>
+                         </div>
+                         <div>
+                              <button class="btn btn-outline-secondary" id="edit-gender">Edit</button>
+                              <button class="btn btn-primary d-none" id="save-gender">Save</button>
+                         </div>
+                         </div>
+
+                    <div class="form-group mb-4">
+                        <label for="email">Email Address</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="email" th:value="${user.email}" disabled>
+                            <button class="btn btn-outline-secondary input-group-append" id="edit-email">Edit</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary d-none" id="save-email">Save</button>
+                    <div class="form-group mb-4">
+                        <label for="mobile">Mobile Number</label>
+                        <div class="input-group">
+                            <input type="tel" class="form-control" id="mobile" th:value="${user.phoneNumber}" disabled>
+                            <button class="btn btn-outline-secondary input-group-append" id="edit-mobile">Edit</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary d-none" id="save-mobile">Save</button>
+                    <h5 class="mt-5">FAQs</h5>
+                    <p>1. How can I change my password?</p>
+                    <p>2. What should I do if I forgot my password?</p>
+                    <p>3. How can I delete my account?</p>
+                    <button class="btn btn-danger mt-3">Delete Account</button>
+                </div>
+                
+                <!-- Manage Address Section -->
+                <div id="manage-address" class="tab-content mt-5" style="display:none;">
+                    <h2 class="mb-4">Manage Address</h2>
+                    <form id="address-form">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="address-name">Name</label>
+                                    <input type="text" class="form-control" id="address-name" th:value="${user.fullName}" placeholder="Your Name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="address-mobile">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="address-mobile" th:value="${user.phoneNumber}" placeholder="Mobile Number" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" th:value="${user.address}" placeholder="Street Address" required>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="locality">Locality</label>
+                                    <input type="text" class="form-control" id="locality" placeholder="Locality" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" placeholder="Pincode" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="city">City/District/Town</label>
+                                    <input type="text" class="form-control" id="city" placeholder="City/District/Town" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <select class="form-control" id="state" required>
+                                        <option value="">Select State</option>
+                                        <option th:each="state : ${states}" th:text="${state}" th:value="${state}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="landmark">Landmark (Optional)</label>
+                            <input type="text" class="form-control" id="landmark" placeholder="Landmark">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>Address Type</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="addressType" id="address-home" value="home" required>
+                                <label class="form-check-label" for="address-home">Home</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="addressType" id="address-work" value="work" required>
+                                <label class="form-check-label" for="address-work">Work</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="saved-address" class="tab-content mt-5" style="display:none;">
+                    <h2>Saved Address</h2>
+                    <div id="address-details" th:utext="${user.address}"></div>
+                    <button class="btn btn-outline-secondary" id="edit-address-btn">Edit Address</button>
+                </div>
+
+                <!-- Wishlist Section -->
+                <div id="my-wishlist" class="tab-content" style="display:none;">
+                    <h2>My Wishlist</h2>
+                    <div th:each="item : ${wishlist}" class="wishlist-item row mb-4 p-3">
+                        <div class="col-md-3">
+                            <img th:src="@{${item.productImage}}" alt="Product Image" class="img-fluid">
+                        </div>
+                        <div class="col-md-6">
+                            <h5 th:text="${item.productName}"></h5>
+                            <div class="rating mb-2">
+                                <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                                <span th:text="'(' + ${item.ratingCount} + ' Ratings)'"></span>
+                            </div>
+                            <p class="price" th:text="'$' + ${item.price}"></p>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <button class="btn btn-danger delete-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div id="my-reviews" class="tab-content" style="display:none;">
+                    <h2>My Reviews and Ratings</h2>
+                    <div th:each="review : ${reviews}" class="review-card">
+                        <div class="product-info">
+                            <img th:src="@{${review.productImage}}" alt="Product Image" class="product-image">
+                            <div class="product-details">
+                                <h5 th:text="${review.productName}"></h5>
+                            </div>
+                        </div>
+                        <div class="rating-review">
+                            <h6 th:text="'Rating: ★★★★☆ ' + ${review.rating}"></h6>
+                            <h6>Review:</h6>
+                            <p th:text="${review.content}"></p>
+                            <div class="user-info">
+                                <p>Reviewed by: <strong th:text="${user.fullName}"></strong></p>
+                                <p th:text="'Delivered on: ' + ${review.deliveryDate}"></p>
+                            </div>
+                        </div>
+                        <div class="review-actions">
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Section -->
+                <div id="my-orders" class="tab-content" style="display:none;">
+                    <h2>My Orders</h2>
+                    <div th:each="order : ${orders}" class="order-item row mb-4 p-3">
+                        <div class="col-md-3">
+                            <img th:src="@{${order.productImage}}" alt="Product Image" class="img-fluid">
+                        </div>
+                        <div class="col-md-6">
+                            <h5 th:text="${order.productName}"></h5>
+                            <p class="price" th:text="'$' + ${order.price}"></p>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <p class="order-status" th:text="'Delivered on ' + ${order.deliveryDate}"></p>
+                            <h6>Order Status</h6>
+                            <button class="btn btn-outline-primary rate-btn">Rate and Review</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <script th:src="@{/js/user-profile.js}"></script>
+</body>
+</html>
