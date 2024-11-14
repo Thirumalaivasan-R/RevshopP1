@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/navbar.css}">
+    <style>
+        /* General body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        th {
+            background-color: #4863A0;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Alternate row colors */
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        /* Hover effect for table rows */
+        tr:hover td {
+            background-color: #f1f1f1;
+            transform: scale(1.01);
+        }
+
+        /* Product image styling */
+        td img {
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        td img:hover {
+            transform: scale(1.2);
+        }
+
+        /* Button styles */
+        .button {
+            padding: 8px 16px;
+            background-color: #A18648;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Table border styles */
+        table {
+            border: 2px solid #007bff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Extra space for image in table */
+        td img {
+            max-width: 100px;
+            display: block;
+        }
+
+        td {
+            border-right: 1px solid #ddd;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4863A0;
+            padding: 20px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo h2 {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .search-bar input {
+            width: 80%; 
+            padding: 12px;
+            border: 2px solid #4863A0; 
+            border-radius: 4px 0 0 4px;
+            font-size: 18px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #333;
+        }
+
+        .search-bar button {
+            padding: 12px;
+            background-color: #4863A0;
+            border: none;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .search-bar button i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            font-size: 18px;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-links a i {
+            margin-right: 8px;
+        }
+
+        .hamburger {
+            display: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .logout-home button {
+            background-color: transparent;
+            border: 1px solid white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logout-home button:hover {
+            background-color: white;
+            color: #4863A0;
+        }
+        
+    </style>
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="logo">
+        <h2>RevShop</h2>
+    </div>
+    <div class="search-bar">
+        <form th:action="@{/searchall}" method="get">
+            <input type="text" name="query" placeholder="Search for products..." required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+    <ul class="nav-links">
+        <li class="dropdown" id="user-dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-user"></i></a>
+            <div class="dropdown-content">
+                <a th:href="@{/registration}">New Customer? Sign Up</a>
+                <a th:href="@{/profile}">My Profile</a>
+                <a th:href="@{/viewOrders}">My Orders</a>
+            </div>
+        </li>
+        <li><a th:href="@{/cart}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        <li><a th:href="@{/wishlist}"><i class="fas fa-heart"></i> Wishlist</a></li>
+        <li><a th:href="@{/sellerRegistration}"><i class="fas fa-store"></i> Become a Seller</a></li>
+        <li class="logout-home">
+            <button onclick="window.location.href='/home'">Home</button>
+            <button onclick="window.location.href='/login'">Logout</button>
+        </li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+</nav>
+    <h1>Your Order Details</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Discount Price</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="orderDetail : ${buyerOrders}">
+                <td th:text="${orderDetail.productName}"></td>
+                <td><img th:src="${orderDetail.productImage}" alt="Product Image"></td>
+                <td th:text="${orderDetail.discountPrice}"></td>
+                <td th:text="${orderDetail.quantity}"></td>
+                <td>
+                    <a th:href="@{/writeReview(productId=${orderDetail.productId})}" class="button">Write Review</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

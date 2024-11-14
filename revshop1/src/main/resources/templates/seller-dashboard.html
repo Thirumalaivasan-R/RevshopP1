@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="seller-styles.css">
+    <title>Seller Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <img th:src="${session.loggedInSeller.image}" alt="Profile Picture" class="profile-pic">
+                 <h3>Hello, <span th:text="${session.loggedInSeller.lastName}"></span></h3>
+                
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item"><a th:href="@{/seller-dashboard}">Dashboard</a></li>
+                <li class="menu-item dropdown">
+                    <a href="#" class="dropdown-btn">Inventory</a>
+                    <ul class="dropdown-content">
+                        <li><a th:href="@{/add-product}">Add Products</a></li>
+                       <li><a th:href="@{/display-products(sellerId=${session.loggedInSeller.sellerId})}">Manage Inventory</a></li> <!-- Manage Inventory Link -->
+                       
+                    </ul>
+                </li>
+                <li class="menu-item"><a href="viewSellerOrders">Orders</a></li>
+                
+                <li class="menu-item"><a th:href="home">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="dashboard-content">
+            <h1>Seller Dashboard</h1>
+            <!-- Dashboard Overview Section -->
+            <div class="dashboard-overview">
+                <div class="card large-card">
+                    <h3>Total Sales</h3>
+                    <p>$12,500</p>
+                    <div class="mini-chart" id="sales-chart"></div>
+                </div>
+                <div class="card">
+                    <h3>Total Orders</h3>
+                    <p>320</p>
+                </div>
+                <div class="card">
+                    <h3>Top-Selling Product</h3>
+                    <p>Wireless Earbuds</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Orders</h3>
+                    <p>10</p>
+                </div>
+                <div class="card">
+                    <h3>Low Stock Products</h3>
+                    <p>3 items</p>
+                </div>
+            </div>
+
+            <!-- Recent Orders Section -->
+            <h2>Recent Orders</h2>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Product</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1245</td>
+                        <td>Bluetooth Headphones</td>
+                        <td>2024-09-26</td>
+                        <td>Delivered</td>
+                        <td>$150</td>
+                    </tr>
+                    <tr>
+                        <td>#1244</td>
+                        <td>Smartphone</td>
+                        <td>2024-09-25</td>
+                        <td>Processing</td>
+                        <td>$900</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        
+        
+    </div>
+</body>
+</html>

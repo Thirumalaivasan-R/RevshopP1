@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="seller-styles.css">
+    <title>Seller Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            color: white;
+        }
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        h3 {
+            margin: 0;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+        .menu-item {
+            margin: 10px 0;
+        }
+        .menu-item a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 20px;
+        }
+        .menu-item a:hover, .dropdown-btn:hover {
+            background-color: #575757;
+        }
+        .dropdown-content {
+            display: none;
+            background-color: #444;
+            list-style: none;
+            padding-left: 0;
+        }
+        .dropdown-content li {
+            padding-left: 20px;
+        }
+        .menu-item .dropdown-btn {
+            cursor: pointer;
+        }
+        .dropdown-btn:hover + .dropdown-content, .dropdown-content:hover {
+            display: block;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            margin-left: 270px; /* Adjust for sidebar width */
+            padding: 20px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        td img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .container {
+                margin-left: 0;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+            }
+            td {
+                display: block;
+                text-align: right;
+                padding: 10px;
+                border: none;
+            }
+            td::before {
+                content: attr(data-label);
+                float: left;
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+            th {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <img th:src="${session.loggedInSeller.image}" alt="Profile Picture" class="profile-pic">
+                <h3>Hello, <span th:text="${session.loggedInSeller.lastName}"></span></h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item"><a th:href="@{/seller-dashboard}">Dashboard</a></li>
+                <li class="menu-item dropdown">
+                    <a href="#" class="dropdown-btn">Inventory</a>
+                    <ul class="dropdown-content">
+                        <li><a th:href="@{/add-product}">Add Products</a></li>
+                        <li><a th:href="@{/display-products(sellerId=${session.loggedInSeller.sellerId})}">Manage Inventory</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item"><a th:href="@{/viewSellerOrders}">Orders</a></li>
+                <li class="menu-item"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <h2>Orders for Seller</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Product Image</th>
+                            <th>Discount Price</th>
+                            <th>Quantity</th>
+                            <th>Order Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through each seller order and display the details -->
+                        <tr th:each="orderDetail : ${sellerOrders}">
+                            <td th:text="${orderDetail.productId}">1</td>
+                            <td th:text="${orderDetail.productName}">Product Name</td>
+                            <td><img th:src="@{${orderDetail.productImage}}" alt="Product Image"/></td>
+                            <td th:text="${orderDetail.discountPrice}">50.00</td>
+                            <td th:text="${orderDetail.quantity}">2</td>
+                            <td th:text="${orderDetail.orderDate}">2024-01-01</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

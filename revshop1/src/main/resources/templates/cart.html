@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/navbar.css}">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4863A0;
+            color: white;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        td {
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Image in table */
+        td img {
+            width: 80px;
+            border-radius: 8px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Buttons for quantity */
+        .quantity-btn {
+            border: 1px solid #ccc;
+            background-color: #f4f4f4;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: #ccc;
+        }
+
+        /* Remove and Save for Later buttons */
+        .action-btn {
+            background-color: #4863A0;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #365c8a;
+        }
+
+        /* Saved for Later Section */
+        .saved-for-later {
+            background-color: white;
+            padding: 20px;
+            margin-top: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Price Details Section */
+        .price-details {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .price-details p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .price-details p strong {
+            font-size: 22px;
+            color: #4863A0;
+        }
+
+        /* Place Order Button */
+        .place-order-btn {
+            background-color: #A18648;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .place-order-btn:hover {
+            background-color: #8d6b38;
+        }
+
+        /* Hover Effects */
+        table tbody tr:hover {
+            background-color: #f4f4f4;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            td img {
+                width: 50px;
+            }
+
+            th, td {
+                font-size: 14px;
+            }
+
+            .price-details p {
+                font-size: 16px;
+            }
+
+            .place-order-btn {
+                font-size: 16px;
+                padding: 10px 16px;
+            }
+        }
+         .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4863A0;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo h2 {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .search-bar input {
+            width: 70%; 
+            padding: 10px;
+            border: 2px solid #4863A0; 
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #333;
+        }
+
+        .search-bar button {
+            padding: 10px;
+            background-color: #4863A0;
+            border: none;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .search-bar button i {
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a i {
+            margin-right: 8px;
+        }
+
+        .hamburger {
+            display: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        /* Update the product image size in the table */
+td img {
+    width: 200px; /* Increase the width for larger screens */
+    border-radius: 8px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 768px) {
+    td img {
+        width: 80px; /* Adjust image size for smaller screens */
+    }
+
+    th, td {
+        font-size: 14px;
+    }
+
+    .price-details p {
+        font-size: 16px;
+    }
+
+    .place-order-btn {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+}
+.logout-home button {
+            background-color: transparent;
+            border: 1px solid white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logout-home button:hover {
+            background-color: white;
+            color: #4863A0;
+        }
+        
+    </style>
+</head>
+<body>
+   <nav class="navbar">
+    <div class="logo">
+        <h2>RevShop</h2>
+    </div>
+    <div class="search-bar">
+        <form th:action="@{/searchall}" method="get">
+            <input type="text" name="query" placeholder="Search for products..." required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+    <ul class="nav-links">
+        <li class="dropdown" id="user-dropdown">
+    
+</li>
+        
+        <li><a th:href="@{/cart}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        <li><a th:href="@{/wishlist}"><i class="fas fa-heart"></i> Wishlist</a></li>
+        <li><a th:href="@{/sellerRegistration}"><i class="fas fa-store"></i> Become a Seller</a></li>
+        <li class="logout-home">
+            <button onclick="window.location.href='/home'">Home</button>
+            <button onclick="window.location.href='/login'">Logout</button>
+        </li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+</nav>
+    <h1>Your Cart</h1>
+
+    <!-- Cart Items Section -->
+    <div>
+       
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cartItem : ${cartItems}">
+                    <td>
+                        <img th:src="@{${cartItem.product.image}}" alt="Product Image" />
+                        <span th:text="${cartItem.product.name}"></span>
+                    </td>
+                    <td>
+                        <form action="/cart/update-quantity" method="post">
+                            <input type="hidden" name="productId" th:value="${cartItem.product.productId}" />
+                            <button class="quantity-btn" type="submit" name="increase" value="false">-</button>
+                            <span th:text="${cartItem.quantity}"></span>
+                            <button class="quantity-btn" type="submit" name="increase" value="true">+</button>
+                        </form>
+                    </td>
+                    <td th:text="${cartItem.product.price}"></td>
+                    <td th:text="${cartItem.product.price * cartItem.quantity}"></td>
+                    <td>
+                        <form action="/cart/save-for-later" method="post" style="display:inline;">
+                            <input type="hidden" name="productId" th:value="${cartItem.product.productId}" />
+                            <button class="action-btn" type="submit">Save for Later</button>
+                        </form>
+                        <form action="/cart/remove" method="post" style="display:inline;">
+                            <input type="hidden" name="productId" th:value="${cartItem.product.productId}" />
+                            <button class="action-btn" type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Saved for Later Section -->
+    <div class="saved-for-later">
+        <h2>Saved for Later</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="savedItem : ${savedItems}">
+                    <td>
+                        <img th:src="@{${savedItem.product.image}}" alt="Product Image" />
+                        <span th:text="${savedItem.product.name}"></span>
+                    </td>
+                    <td>
+                        <form action="/cart/move-to-cart" method="get">
+                            <input type="hidden" name="productId" th:value="${savedItem.product.productId}" />
+                            <button class="action-btn" type="submit">Move to Cart</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(savedItems)}">
+                    <td colspan="2">No items saved for later.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Price Details Section -->
+   <!-- Price Details Section -->
+<div class="price-details">
+    <h2>Price Details</h2>
+    <p>Total Price: <span th:text="${totalPrice}"></span></p>
+    <p>Discount: <span th:text="${discount}"></span></p>
+    <p>Delivery Charges: <span th:text="${deliveryCharges}"></span></p>
+    
+    <!-- Calculate Final Total: Total Price - Discount + Delivery Charges -->
+    <p><strong>Total Amount: 
+        <span th:text="${totalPrice} - ${discount} + ${deliveryCharges}"></span></strong></p>
+    
+    <form action="/checkout" method="post">
+        <input type="hidden" name="totalPrice" th:value="${totalPrice} - ${discount} + ${deliveryCharges}" />
+        <input type="hidden" name="userId" th:value="${userId}" />
+        <button class="place-order-btn" type="submit">Place Order</button>
+    </form>
+</div>
+   
+
+</body>
+</html>
